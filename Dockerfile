@@ -1,4 +1,4 @@
-FROM dkhroad/base:0.2
+FROM dkhroad/base:ubuntu-12.04
 MAINTAINER Devinder Khroad "dkhroad@gmail.com
 
 RUN curl -q  http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | apt-key add -
@@ -15,6 +15,8 @@ RUN chmod a+x /usr/local/bin/jenkins
 
 # Install jenkins plugins
 ADD scripts /tmp/scripts
+ADD config.xml /var/lib/jenkins/config.xml
+RUN /tmp/scripts/plugins.sh 
 
 # Setup jenkins jobs
 #sudo -u jenkins cp -R /vagrant/jobs/* /var/lib/jenkins/jobs/
@@ -24,8 +26,6 @@ EXPOSE 8080
 EXPOSE 9090 
 EXPOSE 22
 
-VOLUME ["/var/lib/jenkins", "/var/log/jenkins"]
 
-RUN /tmp/scripts/plugins.sh 
-COPY config.xml /var/lib/jenkins/config.xml
+VOLUME ["/var/lib/jenkins", "/var/log/jenkins"]
 
